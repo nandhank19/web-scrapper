@@ -1,0 +1,5 @@
+mkdir templates
+mv index.html templates/
+git add templates/index.html
+git commit -m "Move index.html to templates folder for Flask compatibility"
+git push origin main
