@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraper</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Web Scraper</h1>
+        <form id="scrapeForm">
+            <div class="mb-3">
+                <label for="url" class="form-label">Enter URL</label>
+                <input type="text" class="form-control" id="url" name="url" placeholder="Enter the website URL" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Scrape</button>
+        </form>
+        <div id="result" class="mt-5">
+            <!-- Scraped data will be displayed here -->
+        </div>
+        <a href="/download" class="btn btn-success mt-4">Download CSV</a>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#scrapeForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent form submission
+                const url = $('#url').val();
+
+                $.ajax({
+                    url: '/scrape',
+                    method: 'POST',
+                    data: { url: url },
+                    success: function (response) {
+                        if (response.data.includes("Error")) {
+                            $('#result').html('<div class="alert alert-danger">' + response.data + '</div>');
+                        } else {
+                            $('#result').html('<h3>Scraped Data:</h3>' + response.data);
+                        }
+                    },
+                    error: function () {
+                        $('#result').html('<div class="alert alert-danger">An error occurred while scraping.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
